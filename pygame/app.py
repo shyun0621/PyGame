@@ -1,12 +1,37 @@
 from types import BuiltinFunctionType
 import pygame
 import textboxify
+import pdb
+
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
 BLUE  = (  3, 140, 252)
 GREEN = (132, 252,   3)
 RED   = (252,   3,  65)
+
+
+class startButtonObject(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+
+    def render(self, display):
+        global selectedItem
+        isAllSet = True
+        for item in selectedItem:
+            if item < 0:
+                isAllSet = False
+                break
+
+        if  isAllSet:
+            self.image = pygame.image.load('images/start.png')
+            self.image = pygame.transform.scale(self.image, (150, 150))
+
+            surface = pygame.display.get_surface()
+            x,y = size = surface.get_width(), surface.get_height()
+            self.rect = self.image.get_rect(center = (1250, y - self.image.get_height() * 2.5))
+            display.blit(self.image, self.rect)
+
 
 class WasherObject(pygame.sprite.Sprite):
     def __init__(self):
@@ -146,10 +171,10 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
 bg = pygame.image.load('images/background.png')
 clock = pygame.time.Clock()
-myFont = pygame.font.SysFont( "arial", 30, True, False)
+myFont = pygame.font.SysFont("arial", 30, True, False)
 
 cycleItem_width = cycleItem_height = 100
 
@@ -169,6 +194,7 @@ fill_group.add(InventorySlotObject('images/potion.png', (140, 242), 3))
 fill_group.add(InventorySlotObject('images/potion.png', (240, 242), 4))
 
 washer = WasherObject()
+start_button = startButtonObject()
 inventory = InventoryObject()
 bar = BarObject()
 
@@ -224,6 +250,7 @@ while run:
                 if dialog_step <= FINAL_STEP:
                     dialog_box.set_text(dialog_text[dialog_step])
                 else:
+                    # pdb.set_trace()
                     dialog_box.set_text(dialog_text[FINAL_STEP])
 
 
@@ -239,6 +266,7 @@ while run:
         fill_group.draw(screen)
 
     washer.render(screen)
+    start_button.render(screen)
 
     # if dialog_step <= FINAL_STEP:
     dialog_group.add(dialog_box)

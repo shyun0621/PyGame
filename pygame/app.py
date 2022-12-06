@@ -11,6 +11,87 @@ GREEN = (132, 252,   3)
 RED   = (252,   3,  65)
 
 
+class badgeGroupObject(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        surface = pygame.display.get_surface()
+        self.x, self.y = size = surface.get_width(), surface.get_height()
+        self.board_image = pygame.image.load('images/board.png')
+        self.game_surf = pygame.Surface((self.x // 2, self.y // 1.2))
+        self.rect = self.board_image.get_rect(center=(self.x // 2, self.y - self.game_surf.get_height() // 2))
+
+        self.board_image = pygame.image.load('images/board.png')
+        self.board_image = pygame.transform.scale(self.board_image,
+                                                  (self.game_surf.get_width() - 20, self.game_surf.get_height() - 20))
+        self.rect_board = self.board_image.get_rect(
+            center=(self.x // 2 - 20, self.y - self.board_image.get_height() // 2 - 120))
+
+        self.badge1 = pygame.image.load('images/badge1.png')
+        self.badge1 = pygame.transform.scale(self.badge1, (240, 180))
+        self.rect1 = self.badge1.get_rect(center=(self.x // 4 + 170, self.y - self.board_image.get_height() // 2 - 100))
+
+        self.badge2 = pygame.image.load('images/badge2.png')
+        self.badge2 = pygame.transform.scale(self.badge2, (240, 180))
+        self.rect2 = self.badge2.get_rect(
+            center=(self.x // 4 * 3 - 200, self.y - self.board_image.get_height() // 2 - 100))
+
+        self.badge3 = pygame.image.load('images/badge3.png')
+        self.badge3 = pygame.transform.scale(self.badge3, (240, 180))
+        self.rect3 = self.badge3.get_rect(center=(self.x // 4 + 170, self.y - self.board_image.get_height() // 2 + 80))
+
+    def render(self, display):
+        global badge_clicked
+        if badge_clicked:
+            display.blit(self.game_surf, self.rect)
+            display.blit(self.board_image, self.rect_board)
+            display.blit(self.badge1, self.rect1)
+            display.blit(self.badge2, self.rect2)
+            display.blit(self.badge3, self.rect3)
+
+
+    def update(self, event_list, display):
+        global badge_clicked
+        for event in event_list:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    badge_clicked = False
+            if event.type == pygame.MOUSEMOTION:
+                # put the collide check for mouse hover here for each button
+                if self.rect1.collidepoint(pygame.mouse.get_pos()):
+                    badge1_message = myFont.render('make less than 10 min cycle', False, (0, 0, 0), (255, 255, 0))
+                    mouse_pos = pygame.mouse.get_pos()
+                    display.blit(badge1_message, (mouse_pos[0] + 16, mouse_pos[1]))
+                elif self.rect2.collidepoint(pygame.mouse.get_pos()):
+                    badge2_message = myFont.render('less than 100Wh energy per cycle', False, (0, 0, 0), (255, 255, 0))
+                    mouse_pos = pygame.mouse.get_pos()
+                    display.blit(badge2_message, (mouse_pos[0] + 16, mouse_pos[1]))
+                elif self.rect3.collidepoint(pygame.mouse.get_pos()):
+                    badge3_message = myFont.render('run more than 100 cold cycle', False, (0, 0, 0), (255, 255, 0))
+                    mouse_pos = pygame.mouse.get_pos()
+                    display.blit(badge3_message, (mouse_pos[0] + 16, mouse_pos[1]))
+
+class badgeObject(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.clicked = False
+
+    def render(self, display):
+        self.image = pygame.image.load('images/trophy.png')
+        self.image = pygame.transform.scale(self.image, (150, 150))
+
+        surface = pygame.display.get_surface()
+        x,y = size = surface.get_width(), surface.get_height()
+        self.rect = self.image.get_rect(center=(x - 100, 100))
+        display.blit(self.image, self.rect)
+
+    def update(self, event_list):
+        global badge_clicked
+        for event in event_list:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # if self.rect.collidepoint(event.pos):
+                badge_clicked = True
+
+
 class startButtonObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -23,13 +104,13 @@ class startButtonObject(pygame.sprite.Sprite):
                 isAllSet = False
                 break
 
-        if  isAllSet:
+        if isAllSet:
             self.image = pygame.image.load('images/start.png')
             self.image = pygame.transform.scale(self.image, (150, 150))
 
             surface = pygame.display.get_surface()
             x,y = size = surface.get_width(), surface.get_height()
-            self.rect = self.image.get_rect(center = (1250, y - self.image.get_height() * 2.5))
+            self.rect = self.image.get_rect(center=(1250, y - self.image.get_height() * 2.5))
             display.blit(self.image, self.rect)
 
 
@@ -56,6 +137,7 @@ class WasherObject(pygame.sprite.Sprite):
         x,y = size = surface.get_width(), surface.get_height()
         self.rect = self.image.get_rect(center = (1100, y - self.image.get_height() / 2))
         display.blit(self.image, self.rect)
+
 
 class CycleObject(pygame.sprite.Sprite):
     def __init__(self, x, y, image, index):
@@ -103,6 +185,7 @@ class InventoryObject(pygame.sprite.Sprite):
         if index >= 0:
             display.blit(self.image, self.rect)
 
+
 class InventorySlotObject(pygame.sprite.Sprite):
     def __init__(self, name, pos, index):
         super().__init__()
@@ -123,8 +206,8 @@ class InventorySlotObject(pygame.sprite.Sprite):
                     global selectedItem
                     # if self.clicked:
                     clickedItemIndex = self.index
-
                     selectedItem[clickedMenuIndex] = clickedItemIndex
+
 
 class BarObject(pygame.sprite.Sprite):
     def __init__(self):
@@ -170,8 +253,10 @@ DEFAULT_BAR_HEIGHT = 34
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 
+badge_clicked = False
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+# badge_screen = pygame.display.set_mode((SCREEN_WIDTH//3, SCREEN_HEIGHT//3 * 2), pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
 bg = pygame.image.load('images/background.png')
 clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)
@@ -193,7 +278,10 @@ fill_group.add(InventorySlotObject('images/potion.png', (40, 242), 2))
 fill_group.add(InventorySlotObject('images/potion.png', (140, 242), 3))
 fill_group.add(InventorySlotObject('images/potion.png', (240, 242), 4))
 
+fill_group.draw(screen)
+
 washer = WasherObject()
+badge = badgeObject()
 start_button = startButtonObject()
 inventory = InventoryObject()
 bar = BarObject()
@@ -253,8 +341,6 @@ while run:
                     # pdb.set_trace()
                     dialog_box.set_text(dialog_text[FINAL_STEP])
 
-
-
     screen.blit(pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
     item_group.update(event_list)
     item_group.draw(screen)
@@ -267,6 +353,8 @@ while run:
 
     washer.render(screen)
     start_button.render(screen)
+    badge.update(event_list)
+    badge.render(screen)
 
     # if dialog_step <= FINAL_STEP:
     dialog_group.add(dialog_box)
@@ -275,6 +363,10 @@ while run:
     pygame.display.update(rects)
 
     bar.render(screen)
+    badgeGroup = badgeGroupObject()
+    badgeGroup.render(screen)
+    badgeGroup.update(event_list, screen)
+
     pygame.display.flip()
 
 pygame.quit()

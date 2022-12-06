@@ -1,7 +1,9 @@
+import pdb
 from types import BuiltinFunctionType
 import pygame
 import textboxify
-import pdb
+from lua_generation import *
+from os import system, chdir, getcwd
 
 
 BLACK = (  0,   0,   0)
@@ -48,47 +50,46 @@ class badgeGroupObject(pygame.sprite.Sprite):
             display.blit(self.badge2, self.rect2)
             display.blit(self.badge3, self.rect3)
 
-
     def update(self, event_list, display):
         global badge_clicked
         for event in event_list:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     badge_clicked = False
+                    print('badge_clicked to false')
             if event.type == pygame.MOUSEMOTION:
                 # put the collide check for mouse hover here for each button
                 if self.rect1.collidepoint(pygame.mouse.get_pos()):
-                    badge1_message = myFont.render('make less than 10 min cycle', False, (0, 0, 0), (255, 255, 0))
+                    badge1_message = myFont.render('make less than 10 min cycle', False, (255, 255, 255), (128, 128, 128))
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge1_message, (mouse_pos[0] + 16, mouse_pos[1]))
                 elif self.rect2.collidepoint(pygame.mouse.get_pos()):
-                    badge2_message = myFont.render('less than 100Wh energy per cycle', False, (0, 0, 0), (255, 255, 0))
+                    badge2_message = myFont.render('less than 100Wh energy per cycle', False, (255, 255, 255), (128, 128, 128))
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge2_message, (mouse_pos[0] + 16, mouse_pos[1]))
                 elif self.rect3.collidepoint(pygame.mouse.get_pos()):
-                    badge3_message = myFont.render('run more than 100 cold cycle', False, (0, 0, 0), (255, 255, 0))
+                    badge3_message = myFont.render('run more than 100 cold cycle', False, (255, 255, 255), (128, 128, 128))
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge3_message, (mouse_pos[0] + 16, mouse_pos[1]))
+
 
 class badgeObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.clicked = False
-
-    def render(self, display):
         self.image = pygame.image.load('images/trophy.png')
         self.image = pygame.transform.scale(self.image, (150, 150))
 
         surface = pygame.display.get_surface()
-        x,y = size = surface.get_width(), surface.get_height()
+        x, y = size = surface.get_width(), surface.get_height()
         self.rect = self.image.get_rect(center=(x - 100, 100))
+
+    def render(self, display):
         display.blit(self.image, self.rect)
 
     def update(self, event_list):
         global badge_clicked
         for event in event_list:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # if self.rect.collidepoint(event.pos):
+            if self.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
                 badge_clicked = True
 
 
@@ -99,7 +100,7 @@ class startButtonObject(pygame.sprite.Sprite):
     def render(self, display):
         global selectedItem
         isAllSet = True
-        for item in selectedItem:
+        for item in selectedItem: # [0 3 1 1 4]
             if item < 0:
                 isAllSet = False
                 break
@@ -112,6 +113,14 @@ class startButtonObject(pygame.sprite.Sprite):
             x,y = size = surface.get_width(), surface.get_height()
             self.rect = self.image.get_rect(center=(1250, y - self.image.get_height() * 2.5))
             display.blit(self.image, self.rect)
+            SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
+            game_dir = getcwd()
+            dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot"
+            chdir(dpath)
+            system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+            chdir(game_dir)
+            # json_info = {}
+            # json_info['']
 
 
 class WasherObject(pygame.sprite.Sprite):
@@ -126,7 +135,7 @@ class WasherObject(pygame.sprite.Sprite):
                 isAllSet = False
                 break
 
-        if  isAllSet:
+        if isAllSet:
             self.image = pygame.image.load('images/thumb.png')
         else:
             self.image = pygame.image.load('images/ready.png')
@@ -292,17 +301,17 @@ isAllSet = False
 dialog_step = 0
 FINAL_STEP = 4
 dialog_text = [
-    "HoyLee: Hello~ Washer",
+    "HyoLee: Hello~ Washer",
     "Washer: Hi~ HyoLee",
-    "HoyLee: How can I make a custom cycle?",
+    "HyoLee: How can I make a custom cycle?",
     "Washer: You can make it by clicking the items!!",
-    "Washer: Washer:Let's click first item",
+    "Washer: Let's click first item",
     "Washer: Select your Fill Item",
     "Washer: Select your Wash Item",
     "Washer: Select your Spin Item",
     "Washer: Select your Rinse Item",
     "Washer: Select your Drain Item",
-    "Washer: You didn't select any cylcle, please click cycle icon!"
+    "Washer: You didn't select any cycle, please click cycle icon!"
 ]
 
 dialog_box = textboxify.TextBoxFrame(
@@ -360,13 +369,13 @@ while run:
     dialog_group.add(dialog_box)
     dialog_group.update()
     rects = dialog_group.draw(screen)
-    pygame.display.update(rects)
 
     bar.render(screen)
     badgeGroup = badgeGroupObject()
     badgeGroup.render(screen)
     badgeGroup.update(event_list, screen)
 
+    pygame.display.update(rects)
     pygame.display.flip()
 
 pygame.quit()

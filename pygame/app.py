@@ -1,7 +1,11 @@
 from lua_generation import *
 import pygame
 import textboxify
+from threading import Thread
 from os import system, chdir, getcwd
+import os
+
+IMAGE_PATH = "/Users/hykim/project/hackathon/PyGame/pygame/images"
 
 YELLOW = (255, 204, 0)
 PUPPLE = (153, 0, 255)
@@ -25,9 +29,9 @@ class WasherObject(pygame.sprite.Sprite):
                 break
 
         if isAllSet:
-            self.image = pygame.image.load('images/thumb.png')
+            self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/thumb.png'))
         else:
-            self.image = pygame.image.load('images/ready.png')
+            self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/ready.png'))
 
         self.image = pygame.transform.scale(self.image, (300, 300))
 
@@ -74,7 +78,7 @@ class CycleObject(pygame.sprite.Sprite):
 class InventoryObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('images/inventory.png')
+        self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/inventory.png'))
         self.image = pygame.transform.scale(self.image, (300, 180))
         self.rect = self.image.get_rect()
         self.rect.topleft = (30, 150)
@@ -141,7 +145,7 @@ class InventorySlotObject(pygame.sprite.Sprite):
 class BarObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('images/bar.png')
+        self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/bar.png'))
         self.image = pygame.transform.scale(self.image, (603, 300))
         self.rect = self.image.get_rect(topleft=(1250, 750))
 
@@ -192,26 +196,26 @@ class badgeGroupObject(pygame.sprite.Sprite):
         super().__init__()
         surface = pygame.display.get_surface()
         self.x, self.y = size = surface.get_width(), surface.get_height()
-        self.board_image = pygame.image.load('images/board.png')
+        self.board_image = pygame.image.load(os.path.join(IMAGE_PATH + '/board.png'))
         self.game_surf = pygame.Surface((self.x // 2, self.y // 1.2))
         self.rect = self.board_image.get_rect(center=(self.x // 2, self.y - self.game_surf.get_height() // 2))
 
-        self.board_image = pygame.image.load('images/board.png')
+        self.board_image = pygame.image.load(os.path.join(IMAGE_PATH + '/board.png'))
         self.board_image = pygame.transform.scale(self.board_image,
                                                   (self.game_surf.get_width() - 20, self.game_surf.get_height() - 20))
         self.rect_board = self.board_image.get_rect(
             center=(self.x // 2 - 20, self.y - self.board_image.get_height() // 2 - 120))
 
-        self.badge1 = pygame.image.load('images/badge1.png')
+        self.badge1 = pygame.image.load(os.path.join(IMAGE_PATH + '/badge1.png'))
         self.badge1 = pygame.transform.scale(self.badge1, (240, 180))
         self.rect1 = self.badge1.get_rect(center=(self.x // 4 + 170, self.y - self.board_image.get_height() // 2 - 100))
 
-        self.badge2 = pygame.image.load('images/badge2.png')
+        self.badge2 = pygame.image.load(os.path.join(IMAGE_PATH + '/badge2.png'))
         self.badge2 = pygame.transform.scale(self.badge2, (240, 180))
         self.rect2 = self.badge2.get_rect(
             center=(self.x // 4 * 3 - 200, self.y - self.board_image.get_height() // 2 - 100))
 
-        self.badge3 = pygame.image.load('images/badge3.png')
+        self.badge3 = pygame.image.load(os.path.join(IMAGE_PATH + '/badge3.png'))
         self.badge3 = pygame.transform.scale(self.badge3, (240, 180))
         self.rect3 = self.badge3.get_rect(center=(self.x // 4 + 170, self.y - self.board_image.get_height() // 2 + 80))
 
@@ -250,7 +254,7 @@ class badgeGroupObject(pygame.sprite.Sprite):
 class badgeObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('images/trophy.png')
+        self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/trophy.png'))
         self.image = pygame.transform.scale(self.image, (150, 150))
 
         surface = pygame.display.get_surface()
@@ -270,7 +274,7 @@ class badgeObject(pygame.sprite.Sprite):
 class startButtonObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load('images/start.png')
+        self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/start.png'))
         self.image = pygame.transform.scale(self.image, (150, 150))
 
         surface = pygame.display.get_surface()
@@ -287,15 +291,23 @@ class startButtonObject(pygame.sprite.Sprite):
         if isAllSet:
             display.blit(self.image, self.rect)
 
+    def onlyForTest(self):
+        SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
+        game_dir = getcwd()
+        dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
+
+        # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/"
+        chdir(dpath)
+        system("dmake -f gfl-mc-target.mk RELEASE=Y DEBUG=N build_parametric")
+        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        chdir(game_dir)
+
+
     def update(self, event_list):
         for event in event_list:
             if self.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
-                SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
-                game_dir = getcwd()
-                dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot"
-                chdir(dpath)
-                system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-                chdir(game_dir)
+                t = Thread(target=self.onlyForTest, args=())
+                t.start()
 
 
 DEFAULT_BAR_X = 1391
@@ -309,45 +321,45 @@ badge_clicked = False
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-bg = pygame.image.load('images/background.png')
+bg = pygame.image.load(os.path.join(IMAGE_PATH + '/background.png'))
 clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)
 
 cycleItem_width = cycleItem_height = 100
 
 item_group = pygame.sprite.Group()
-item_group.add(CycleObject(10 + cycleItem_width / 2, 30, 'images/fill.png', 0))
-item_group.add(CycleObject(100 + cycleItem_width / 2, 30, 'images/wash.png', 1))
-item_group.add(CycleObject(190 + cycleItem_width / 2, 30, 'images/spin.png', 2))
-item_group.add(CycleObject(280 + cycleItem_width / 2, 30, 'images/rinse.png', 3))
+item_group.add(CycleObject(10 + cycleItem_width / 2, 30, os.path.join(IMAGE_PATH + '/fill.png'), 0))
+item_group.add(CycleObject(100 + cycleItem_width / 2, 30, os.path.join(IMAGE_PATH + '/wash.png'), 1))
+item_group.add(CycleObject(190 + cycleItem_width / 2, 30, os.path.join(IMAGE_PATH + '/spin.png'), 2))
+item_group.add(CycleObject(280 + cycleItem_width / 2, 30, os.path.join(IMAGE_PATH + '/rinse.png'), 3))
 
 fill_group = pygame.sprite.Group()
-fill_group.add(InventorySlotObject('images/potion_fill.png', ( 41, 162), 0))
-fill_group.add(InventorySlotObject('images/potion_fill.png', (139, 162), 1))
-fill_group.add(InventorySlotObject('images/potion_fill.png', (238, 162), 2))
-fill_group.add(InventorySlotObject('images/potion_fill.png', ( 41, 248), 3))
-fill_group.add(InventorySlotObject('images/potion_fill.png', (139, 248), 4))
+fill_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_fill.png'), ( 41, 162), 0))
+fill_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_fill.png'), (139, 162), 1))
+fill_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_fill.png'), (238, 162), 2))
+fill_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_fill.png'), ( 41, 248), 3))
+fill_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_fill.png'), (139, 248), 4))
 
 wash_group = pygame.sprite.Group()
-wash_group.add(InventorySlotObject('images/potion_wash.png', ( 41, 162), 0))
-wash_group.add(InventorySlotObject('images/potion_wash.png', (139, 162), 1))
-wash_group.add(InventorySlotObject('images/potion_wash.png', (238, 162), 2))
-wash_group.add(InventorySlotObject('images/potion_wash.png', ( 41, 248), 3))
-wash_group.add(InventorySlotObject('images/potion_wash.png', (139, 248), 4))
+wash_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_wash.png'), ( 41, 162), 0))
+wash_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_wash.png'), (139, 162), 1))
+wash_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_wash.png'), (238, 162), 2))
+wash_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_wash.png'), ( 41, 248), 3))
+wash_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_wash.png'), (139, 248), 4))
 
 spin_group = pygame.sprite.Group()
-spin_group.add(InventorySlotObject('images/potion_spin.png', ( 41, 162), 0))
-spin_group.add(InventorySlotObject('images/potion_spin.png', (139, 162), 1))
-spin_group.add(InventorySlotObject('images/potion_spin.png', (238, 162), 2))
-spin_group.add(InventorySlotObject('images/potion_spin.png', ( 41, 248), 3))
-spin_group.add(InventorySlotObject('images/potion_spin.png', (139, 248), 4))
+spin_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_spin.png'), ( 41, 162), 0))
+spin_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_spin.png'), (139, 162), 1))
+spin_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_spin.png'), (238, 162), 2))
+spin_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_spin.png'), ( 41, 248), 3))
+spin_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_spin.png'), (139, 248), 4))
 
 rinse_group = pygame.sprite.Group()
-rinse_group.add(InventorySlotObject('images/potion_rinse.png', ( 41, 162), 0))
-rinse_group.add(InventorySlotObject('images/potion_rinse.png', (139, 162), 1))
-rinse_group.add(InventorySlotObject('images/potion_rinse.png', (238, 162), 2))
-rinse_group.add(InventorySlotObject('images/potion_rinse.png', ( 41, 248), 3))
-rinse_group.add(InventorySlotObject('images/potion_rinse.png', (139, 248), 4))
+rinse_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_rinse.png'), ( 41, 162), 0))
+rinse_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_rinse.png'), (139, 162), 1))
+rinse_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_rinse.png'), (238, 162), 2))
+rinse_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_rinse.png'), ( 41, 248), 3))
+rinse_group.add(InventorySlotObject(os.path.join(IMAGE_PATH + '/potion_rinse.png'), (139, 248), 4))
 
 washer = WasherObject()
 inventory = InventoryObject()

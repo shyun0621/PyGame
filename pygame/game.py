@@ -297,7 +297,7 @@ class startButtonObject(pygame.sprite.Sprite):
                 system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
                 chdir(game_dir)
 
-                
+
 DEFAULT_BAR_X = 1391
 DEFAULT_BAR_Y = 768
 DEFAULT_BAR_WIDTH = 7.4

@@ -56,7 +56,7 @@ class badgeGroupObject(pygame.sprite.Sprite):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     badge_clicked = False
-                    print('badge_clicked to false')
+                    # print('badge_clicked to false')
             if event.type == pygame.MOUSEMOTION:
                 # put the collide check for mouse hover here for each button
                 if self.rect1.collidepoint(pygame.mouse.get_pos()):
@@ -64,11 +64,11 @@ class badgeGroupObject(pygame.sprite.Sprite):
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge1_message, (mouse_pos[0] + 16, mouse_pos[1]))
                 elif self.rect2.collidepoint(pygame.mouse.get_pos()):
-                    badge2_message = myFont.render('less than 100Wh energy per cycle', False, (255, 255, 255), (128, 128, 128))
+                    badge2_message = myFont.render('less than 100 Wh energy per cycle', False, (255, 255, 255), (128, 128, 128))
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge2_message, (mouse_pos[0] + 16, mouse_pos[1]))
                 elif self.rect3.collidepoint(pygame.mouse.get_pos()):
-                    badge3_message = myFont.render('run more than 100 cold cycle', False, (255, 255, 255), (128, 128, 128))
+                    badge3_message = myFont.render('run more than 20 cold cycle', False, (255, 255, 255), (128, 128, 128))
                     mouse_pos = pygame.mouse.get_pos()
                     display.blit(badge3_message, (mouse_pos[0] + 16, mouse_pos[1]))
 
@@ -264,9 +264,10 @@ SCREEN_HEIGHT = 1080
 
 badge_clicked = False
 pygame.init()
+
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
-# badge_screen = pygame.display.set_mode((SCREEN_WIDTH//3, SCREEN_HEIGHT//3 * 2), pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
 bg = pygame.image.load('images/background.png')
+
 clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)
 

@@ -63,24 +63,24 @@ def add_fillinfo(value):
 
     return temp_str
 
-def add_washcyle():
+def add_washcyle(data):
     temp_str = ""
-
+    # 8 40 40 40
     temp_str += "\t\t\twash_step.lid.lock(),\n"
     temp_str += "\t\t\twash_step.pause({ seconds = 5 }),\n"
     temp_str += "\t\t\twash_step.sub_cycle_update({ sub_cycle = 'fill' }),\n"
-    temp_str += add_fillinfo(2)
+    temp_str += add_fillinfo(data[0])
 
     temp_str += "\t\t\twash_step.pause({ seconds = 10 }),\n"
     temp_str += "\t\t\twash_step.sub_cycle_update({sub_cycle = 'wash'}),\n"
-    temp_str += add_tumbleinfo(time_sec=90)
+    temp_str += add_tumbleinfo(time_sec=data[1])
 
     temp_str += "\t\t\twash_step.sub_cycle_update({ sub_cycle = 'rinse' }),\n"
-    temp_str += "\t\t\twash_step.pause({ seconds = 10 }),\n"
+    temp_str += "\t\t\twash_step.pause({{ seconds = {} }}),\n".format(data[2])
     temp_str += "\t\t\twash_step.sub_cycle_update({sub_cycle = 'spin'}),\n"
     temp_str += "\t\t\twash_step.pause({seconds = 10}),\n"
 
-    temp_str += add_spininfo(personal_data_path='data/global_front_load/wash_steps/spin/profile/closed_loop/spin_drain_test/final_spin_drain_on_test.lua', time_sec=60)
+    temp_str += add_spininfo(personal_data_path='data/global_front_load/wash_steps/spin/profile/closed_loop/spin_drain_test/final_spin_drain_on_test.lua', time_sec=data[3])
     temp_str += "\t\t\twash_step.drain_pump_timed({ seconds = 10 }),\n"
     temp_str += "\t\t\twash_step.lid.unlock()"
 
@@ -94,7 +94,7 @@ def SaveToLua(data, lua_file_name, note=''):
     lua_str += "{\n"
     with open(lua_file_name, 'wb') as f:
         lua_str += "\t\tsteps = {\n"
-        lua_str += add_washcyle()
+        lua_str += add_washcyle(data)
         lua_str += "\t\n"
         lua_str += "\t\t}\n"
         lua_str += "\t})\n"

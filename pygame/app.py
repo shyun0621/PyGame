@@ -89,22 +89,22 @@ class InventorySlotObject(pygame.sprite.Sprite):
                     clickedItemIndex = self.index
                     selectedItem[clickedMenuIndex] = clickedItemIndex
                     if self.index == 0:
-                        cycle[clickedMenuIndex] = 0
+                        cycleMenu[clickedMenuIndex] = 0
                     elif self.index == 1:
-                        cycle[clickedMenuIndex] += 1
+                        cycleMenu[clickedMenuIndex] += 1
                     elif self.index == 2:
-                        cycle[clickedMenuIndex] += 2
+                        cycleMenu[clickedMenuIndex] += 2
                     elif self.index == 3:
-                        cycle[clickedMenuIndex] += 4
+                        cycleMenu[clickedMenuIndex] += 4
                     elif self.index == 4:
-                        cycle[clickedMenuIndex] += 8
+                        cycleMenu[clickedMenuIndex] += 8
 
                     if clickedMenuIndex == 0:
-                        if cycle[clickedMenuIndex] > 8:
-                            cycle[clickedMenuIndex] = 8
+                        if cycleMenu[clickedMenuIndex] > 8:
+                            cycleMenu[clickedMenuIndex] = 8
                     else:
-                        if cycle[clickedMenuIndex] > 40:
-                            cycle[clickedMenuIndex] = 40
+                        if cycleMenu[clickedMenuIndex] > 40:
+                            cycleMenu[clickedMenuIndex] = 40
 
 class BarObject(pygame.sprite.Sprite):
     def __init__(self):
@@ -123,22 +123,22 @@ class BarObject(pygame.sprite.Sprite):
 
         for idx in range(len(selectedItem)):         
             if selectedItem[idx] >= 0:           
-                title = myFont.render(str(cycle[idx]), True, BLACK)    
+                title = myFont.render(str(cycleMenu[idx]), True, BLACK)    
                 if idx == 0:
                     offsetH = 0
-                    offsetW = cycle[idx] * 60 / 8
+                    offsetW = cycleMenu[idx] * 60 / 8
                     color = PUPPLE
                 elif idx == 1:
                     offsetH = 61
-                    offsetW = cycle[idx] * 60 / 40  
+                    offsetW = cycleMenu[idx] * 60 / 40  
                     color = GREEN
                 elif idx == 2:
                     offsetH = 123
-                    offsetW = cycle[idx] * 60 / 40
+                    offsetW = cycleMenu[idx] * 60 / 40
                     color = BLUE
                 elif idx == 3:
                     offsetH = 189
-                    offsetW = cycle[idx] * 60 / 40
+                    offsetW = cycleMenu[idx] * 60 / 40
                     color = RED
                     
                 pygame.draw.rect(display, color, (DEFAULT_BAR_X, DEFAULT_BAR_Y + offsetH, DEFAULT_BAR_WIDTH * offsetW, DEFAULT_BAR_HEIGHT), 0)
@@ -261,7 +261,7 @@ class startButtonObject(pygame.sprite.Sprite):
                 game_dir = getcwd()
                 dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
                 chdir(dpath)
-                SaveToLua(cycle, "diy_cycle.lua", "Diy Cycle")
+                SaveToLua(cycleMenu, "diy_cycle.lua", "Diy Cycle")
 
                 gpath = "/Users/jessie/GEA_Code/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
                 chdir(gpath)
@@ -286,7 +286,7 @@ clickedMenuIndex = -1
 clickedItemIndex = 0
 dialog_step = 0
 selectedItem = [-1 for i in range(MENU_COUNT)]
-cycle = [0 for i in range(MENU_COUNT)]
+cycleMenu = [0 for i in range(MENU_COUNT)]
 
 cycleItems = [
     CycleObject(CYCLE_ITEM_POS_X, CYCLE_ITEM_POS_Y, IMAGE_PATH + IMAGE_CYCLE_FILL, 0),

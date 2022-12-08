@@ -22,7 +22,7 @@ class Button(object):
 
     def process_kwargs(self, kwargs):
         settings = {
-            "color": py.Color('cadetblue'),
+            "color": py.Color('skyblue'),
             "text": None,
             "font": None,  # py.font.Font(None,16),
             "call_on_release": True,
@@ -162,15 +162,15 @@ btn_settings = {
     'border_color': (255, 255, 255),
 }
 
-plain_btn = Button(rect=(200, 450, 250, 45), command=lambda: print('plain button clicked'), event_trigger=1, text='PLAIN MODE',
+plain_btn = Button(rect=(330, 150, 150, 100), command=lambda: print('plain button clicked'), event_trigger=1, text='PLAIN MODE',
              **btn_settings)
-game_btn = Button(rect=(200, 500, 250, 45), command=lambda: print('game button clicked'), event_trigger=2, text='GAME MODE',
+game_btn = Button(rect=(330, 280, 150, 100), command=lambda: print('game button clicked'), event_trigger=2, text='GAME MODE',
              **btn_settings)
 
 done = False
 
-bg = py.image.load('images/background.png')
-screen = py.display.set_mode((600, 600), py.RESIZABLE)
+bg = py.image.load('images/launcher_background.png')
+screen = py.display.set_mode((1280, 720), py.RESIZABLE)
 
 # MAIN LOOPING
 while not done:
@@ -180,7 +180,7 @@ while not done:
         plain_btn.get_event(event)
         game_btn.get_event(event)
 
-    screen.blit(py.transform.scale(bg, (600, 600)), (0, 0))
+    screen.blit(py.transform.scale(bg, (1280, 720)), (0, 0))
     plain_btn.draw(screen)
     game_btn.draw(screen)
     py.display.update()

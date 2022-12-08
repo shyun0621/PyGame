@@ -308,6 +308,16 @@ class startButtonObject(pygame.sprite.Sprite):
             if self.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
                 t = Thread(target=self.onlyForTest, args=())
                 t.start()
+                # SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
+                game_dir = getcwd()
+                dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
+                chdir(dpath)
+                SaveToLua(cycle, "diy_cycle.lua", "Diy Cycle")
+
+                gpath = "/Users/jessie/GEA_Code/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
+                chdir(gpath)
+                system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+                chdir(game_dir)
 
 
 DEFAULT_BAR_X = 1391
@@ -424,7 +434,6 @@ while run:
                 if dialog_step <= FINAL_STEP:
                     dialog_box.set_text(dialog_text[dialog_step])
                 else:
-                    # pdb.set_trace()
                     dialog_box.set_text(dialog_text[FINAL_STEP])
 
     screen.blit(pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
@@ -432,7 +441,6 @@ while run:
     item_group.draw(screen)
 
     inventory.render(screen, clickedMenuIndex)
-
 
     if clickedMenuIndex == 0:
         fill_group.update(event_list)
@@ -446,16 +454,10 @@ while run:
     elif clickedMenuIndex == 3:
         rinse_group.update(event_list)
         rinse_group.draw(screen)
-    # elif clickedMenuIndex == 4:
-    #     drain_group.update(event_list)
-    #     drain_group.draw(screen)
 
-    bar.render(screen)
     washer.render(screen)
     start_button.update(event_list)
     start_button.render(screen)
-    badge.update(event_list)
-    badge.render(screen)
 
     # if dialog_step <= FINAL_STEP:
     dialog_group.add(dialog_box)
@@ -466,6 +468,9 @@ while run:
     badgeGroup = badgeGroupObject()
     badgeGroup.render(screen)
     badgeGroup.update(event_list, screen)
+
+    badge.update(event_list)
+    badge.render(screen)
 
     pygame.display.update(rects)
     pygame.display.flip()

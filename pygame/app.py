@@ -28,18 +28,27 @@ class LoadingObject(pygame.sprite.Sprite):
             if img == ".DS_Store":
                 pass
             else:
-                self.image_sprite.append(pygame.image.load(os.path.join(image_path, img)))
+                self.image = pygame.image.load(os.path.join(image_path, img))
+                self.image = pygame.transform.scale(self.image, (300, 300))
+                self.image_sprite.append(self.image)
 
     def render(self, display):
-        if self.value >= len(self.image_sprite):
-            self.value = 0
-        self.image = self.image_sprite[self.value]
-        surface = pygame.display.get_surface()
-        x, y = size = surface.get_width(), surface.get_height()
-        self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
-        display.blit(self.image, self.rect)
+        global selectedItem
+        isAllSet = True
+        for item in selectedItem:  # [0 3 1 1 4]
+            if item < 0:
+                isAllSet = False
+                break
+        if isAllSet:
+            if self.value >= len(self.image_sprite):
+                self.value = 0
+            self.image = self.image_sprite[self.value]
+            surface = pygame.display.get_surface()
+            x, y = size = surface.get_width(), surface.get_height()
+            self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+            display.blit(self.image, self.rect)
 
-        self.value += 1
+            self.value += 1
 
 
 class WasherObject(pygame.sprite.Sprite):

@@ -1,4 +1,5 @@
 import pdb
+import time
 
 from lua_generation import *
 import pygame
@@ -30,7 +31,6 @@ class LoadingObject(pygame.sprite.Sprite):
 
     def render(self, display):
         global cycle_ready
-        global org_bg
         if cycle_ready:
             if self.value >= len(self.image_sprite):
                 self.value = 0
@@ -39,17 +39,10 @@ class LoadingObject(pygame.sprite.Sprite):
             x, y = size = surface.get_width(), surface.get_height()
 
             self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
-            org_img = pygame.surfarray.array3d(org_bg)
-            bg_coord_box = org_img[950:1250, y - 30 - self.image.get_height() - 150: y - 30 - self.image.get_height() + 150, :]
-            tmp = pygame.surfarray.array3d(self.image)
-            tmp[tmp == [99, 204, 202]] = bg_coord_box
-            surf = pygame.surfarray.make_surface(tmp)
-
-            display.blit(surf, self.rect)
+            display.blit(self.image, self.rect)
 
             self.value += 1
 
-p
 class WasherObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -263,17 +256,17 @@ class startButtonObject(pygame.sprite.Sprite):
     def onlyForTest(self):
         global cycle_ready
         cycle_ready = True
-        SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
-
-        game_dir = getcwd()
-        dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
-
-        # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/"
-        chdir(dpath)
-        system("dmake -f gfl-mc-target.mk RELEASE=Y DEBUG=N build_parametric")
-        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-        chdir(game_dir)
-        cycle_ready = False
+        # SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
+        #
+        # game_dir = getcwd()
+        # dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
+        #
+        # # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/"
+        # chdir(dpath)
+        # system("dmake -f gfl-mc-target.mk RELEASE=Y DEBUG=N build_parametric")
+        # # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        # chdir(game_dir)
+        # cycle_ready = False
 
 
     def update(self, event_list):
@@ -379,6 +372,7 @@ cycle_ready = False
 
 while run:
     clock.tick(60)
+    cycle_ready = True
     event_list = pygame.event.get()
     for event in event_list:
         if event.type == pygame.QUIT:
@@ -391,7 +385,6 @@ while run:
                     dialog_box.set_text(DIALOG_TEXT[dialog_step])
 
     org_bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    # pdb.set_trace()
     screen.blit(org_bg, (0, 0))
     cycle_group.draw(screen)
     cycle_group.update(event_list)
@@ -413,9 +406,9 @@ while run:
     badge.update(event_list)
     badge.render(screen)
 
-    badgeGroup = badgeGroupObject()
-    badgeGroup.render(screen)
-    badgeGroup.update(event_list, screen)
+    # badgeGroup = badgeGroupObject()
+    # badgeGroup.render(screen)
+    # badgeGroup.update(event_list, screen)
 
     pygame.display.flip()
 

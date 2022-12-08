@@ -16,7 +16,7 @@ def add_spininfo(personal_data_path, time_sec=0):
     temp_str += "\t\t\t\t\tmore_seconds = {},\n".format(time_sec)
     temp_str += "\t\t\t\t\textra_seconds = {}\n".format(time_sec)
     temp_str += "\t\t\t\t}),\n"
-    temp_str += "\t\t\t\tprofile = import({})(personality_data)\n".format(personal_data_path)
+    temp_str += "\t\t\t\tprofile = import(\"{}\")(personality_data)\n".format(personal_data_path)
     temp_str += "\t\t\t}),\n"
 
     return temp_str

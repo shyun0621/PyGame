@@ -56,7 +56,7 @@ class WasherObject(pygame.sprite.Sprite):
             self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/ready.png'))
 
         self.image = pygame.transform.scale(self.image, (300, 300))
-        
+
         surface = pygame.display.get_surface()
         x, y = size = surface.get_width(), surface.get_height()
         self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
@@ -83,7 +83,7 @@ class CycleObject(pygame.sprite.Sprite):
                     clickedMenuIndex = self.index
                     dialog_box.reset(hard=True)
                     dialog_box.set_text(DIALOG_TEXT[FINAL_STEP + clickedMenuIndex + 1])
-                    
+
 class InventoryObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -124,7 +124,7 @@ class InventorySlotObject(pygame.sprite.Sprite):
                     global selectedItem
                     clickedItemIndex = self.index
                     selectedItem[clickedMenuIndex] = clickedItemIndex
-                    
+
                     if clickedItemIndex == 0:
                         cycleMenu[clickedMenuIndex] = 0
                     else:
@@ -149,16 +149,16 @@ class BarObject(pygame.sprite.Sprite):
         global clickedMenuIndex
         global selectedItem
 
-        for idx in range(len(selectedItem)):         
-            if selectedItem[idx] >= 0:           
-                title = myFont.render(str(cycleMenu[idx]), True, BLACK)    
+        for idx in range(len(selectedItem)):
+            if selectedItem[idx] >= 0:
+                title = myFont.render(str(cycleMenu[idx]), True, BLACK)
                 offsetH = BAR_ITEM_OFFSET_H[idx]
                 offsetW = cycleMenu[idx] * BAR_ITEM_OFFSET_W[idx]
                 color = BAR_COLOR_MAP[idx]
-                    
+
                 pygame.draw.rect(display, color, (DEFAULT_BAR_X, DEFAULT_BAR_Y + offsetH, DEFAULT_BAR_WIDTH * offsetW, DEFAULT_BAR_HEIGHT), 0)
                 screen.blit(title, [1400, DEFAULT_BAR_Y + offsetH + 2])
-        
+
 class badgeGroupObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -276,16 +276,6 @@ class startButtonObject(pygame.sprite.Sprite):
             if self.rect.collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
                 t = Thread(target=self.onlyForTest, args=())
                 t.start()
-                # SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
-                game_dir = getcwd()
-                dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
-                chdir(dpath)
-                SaveToLua(cycleMenu, "diy_cycle.lua", "Diy Cycle")
-
-                gpath = "/Users/jessie/GEA_Code/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
-                chdir(gpath)
-                system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-                chdir(game_dir)
 
 def isAllSet():
     global selectedItem
@@ -293,7 +283,7 @@ def isAllSet():
         if item <= 0:
             return False
     return True
-                
+
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 bg = pygame.image.load(os.path.join(IMAGE_PATH + '/background.png'))

@@ -369,7 +369,7 @@ menuSoundEffect = pygame.mixer.Sound(SOUND_PATH + '/menu.wav')
 menuSoundEffect.set_volume(0.1)
 itemSoundEffect = pygame.mixer.Sound(SOUND_PATH + '/item.wav')
 itemSoundEffect.set_volume(0.1)
-
+cycle_ready = False
 
 while run:
     clock.tick(60)

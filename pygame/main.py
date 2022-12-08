@@ -22,7 +22,7 @@ class Button(object):
 
     def process_kwargs(self, kwargs):
         settings = {
-            "color": py.Color('red'),
+            "color": py.Color('cadetblue'),
             "text": None,
             "font": None,  # py.font.Font(None,16),
             "call_on_release": True,
@@ -157,14 +157,14 @@ win = menuScreen.makeCurrentScreen()
 btn_settings = {
     "clicked_font_color": (0, 0, 0),
     "hover_font_color": (205, 195, 100),
-    'font': py.font.Font(None, 16),
-    'font_color': (255, 255, 255),
-    'border_color': (0, 0, 0),
+    'font': py.font.Font(None, 25),
+    'font_color': (0, 0, 0),
+    'border_color': (255, 255, 255),
 }
 
-plain_btn = Button(rect=(150, 450, 105, 25), command=lambda: print('plain button clicked'), event_trigger=1, text='PLAIN MODE',
+plain_btn = Button(rect=(200, 450, 250, 45), command=lambda: print('plain button clicked'), event_trigger=1, text='PLAIN MODE',
              **btn_settings)
-game_btn = Button(rect=(150, 550, 105, 25), command=lambda: print('game button clicked'), event_trigger=2, text='GAME MODE',
+game_btn = Button(rect=(200, 500, 250, 45), command=lambda: print('game button clicked'), event_trigger=2, text='GAME MODE',
              **btn_settings)
 
 done = False

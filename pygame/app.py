@@ -88,16 +88,7 @@ class InventorySlotObject(pygame.sprite.Sprite):
                     global selectedItem
                     clickedItemIndex = self.index
                     selectedItem[clickedMenuIndex] = clickedItemIndex
-                    if self.index == 0:
-                        cycleMenu[clickedMenuIndex] = 0
-                    elif self.index == 1:
-                        cycleMenu[clickedMenuIndex] += 1
-                    elif self.index == 2:
-                        cycleMenu[clickedMenuIndex] += 2
-                    elif self.index == 3:
-                        cycleMenu[clickedMenuIndex] += 4
-                    elif self.index == 4:
-                        cycleMenu[clickedMenuIndex] += 8
+                    cycleMenu[clickedMenuIndex] += CYCLE_MENU_VALUE[self.index]
 
                     if clickedMenuIndex == 0:
                         if cycleMenu[clickedMenuIndex] > 8:
@@ -124,22 +115,9 @@ class BarObject(pygame.sprite.Sprite):
         for idx in range(len(selectedItem)):         
             if selectedItem[idx] >= 0:           
                 title = myFont.render(str(cycleMenu[idx]), True, BLACK)    
-                if idx == 0:
-                    offsetH = BAR_ITEM_0_OFFSET_H
-                    offsetW = cycleMenu[idx] * 60 / 8
-                    color = PUPPLE
-                elif idx == 1:
-                    offsetH = BAR_ITEM_1_OFFSET_H
-                    offsetW = cycleMenu[idx] * 60 / 40  
-                    color = GREEN
-                elif idx == 2:
-                    offsetH = BAR_ITEM_2_OFFSET_H
-                    offsetW = cycleMenu[idx] * 60 / 40
-                    color = BLUE
-                elif idx == 3:
-                    offsetH = BAR_ITEM_3_OFFSET_H
-                    offsetW = cycleMenu[idx] * 60 / 40
-                    color = RED
+                offsetH = BAR_ITEM_OFFSET_H[idx]
+                offsetW = cycleMenu[idx] * BAR_ITEM_OFFSET_W[idx]
+                color = BAR_COLOR_MAP[idx]
                     
                 pygame.draw.rect(display, color, (DEFAULT_BAR_X, DEFAULT_BAR_Y + offsetH, DEFAULT_BAR_WIDTH * offsetW, DEFAULT_BAR_HEIGHT), 0)
                 screen.blit(title, [1400, DEFAULT_BAR_Y + offsetH + 2])

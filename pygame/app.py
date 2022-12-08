@@ -340,9 +340,10 @@ dialog_box = textboxify.TextBoxFrame(
         lines=2,
         pos=(100, 800),
         padding=(150, 100),
-        font_color=(92, 53, 102),
-        font_size=40,
-        bg_color=(173, 127, 168),
+        font_name="Consolas",
+        font_color=(0, 0, 0),
+        font_size=20,
+        bg_color=(239, 231, 204),
     )
 dialog_box.set_indicator()
 dialog_box.set_portrait()

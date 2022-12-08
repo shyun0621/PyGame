@@ -5,6 +5,7 @@ import string
 import os
 from os import system, chdir, getcwd
 from lua_generation import SaveToLua
+import threading
 
 class LoadingObject(pg.sprite.Sprite):
     def __init__(self):
@@ -253,23 +254,30 @@ class Button(object):
         elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
             self.on_release(event)
 
+    def onlyForTest(self):
+        global cycle_start
+
+        game_dir = getcwd()
+        dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles/"
+        chdir(dpath)
+        SaveToLua([int(item.final) for item in tbs], "diy_cycle.lua", "Diy Cycle")
+        gpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
+        chdir(gpath)
+        # system("dmake -f gfl-mc-target.mk clean -j16 RELEASE=N DEBUG=N")
+        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        system("blp --address 0xC0 --file build/Binaries/gfl-mc_application_v0.0.0.0.apl --force")
+        chdir(game_dir)
+        cycle_start = False
+
     def on_click(self, event):
         global tbs
         global cycle_start
         if self.rect.collidepoint(event.pos):
             self.clicked = True
             cycle_start = True
-            SaveToLua([int(item.final) for item in tbs], "diy_cycle.lua", "Diy Cycle")
-            # game_dir = getcwd()
-            # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
-            # chdir(dpath)
-            # SaveToLua(tbs, "diy_cycle.lua", "Diy Cycle")
-            #
-            # gpath = "/Users/jessie/GEA_Code/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
-            # chdir(gpath)
-            # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-            # chdir(game_dir)
-            # cycle_start = False
+            t = threading.Thread(target=self.onlyForTest, args=())
+            t.start()
+
             if not self.call_on_release:
                 self.function()
 

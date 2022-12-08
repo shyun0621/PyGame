@@ -14,14 +14,7 @@ class WasherObject(pygame.sprite.Sprite):
         super().__init__()
 
     def render(self, display):
-        global selectedItem
-        isAllSet = True
-        for item in selectedItem:
-            if item < 0:
-                isAllSet = False
-                break
-
-        if isAllSet:
+        if isAllSet():
             self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/thumb.png'))
         else:
             self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/ready.png'))
@@ -124,18 +117,13 @@ class BarObject(pygame.sprite.Sprite):
         display.blit(self.image, self.rect)
         global clickedMenuIndex
         global selectedItem
-        global isAllSet
         color = YELLOW
         offsetH = 0
         offsetW = 0
 
         for idx in range(len(selectedItem)):         
             if selectedItem[idx] >= 0:           
-                if clickedMenuIndex == 0:
-                    title = myFont.render(str(cycle[idx]), True, BLACK)
-                else:
-                    title = myFont.render(str(cycle[idx]), True, BLACK)
-                    
+                title = myFont.render(str(cycle[idx]), True, BLACK)    
                 if idx == 0:
                     offsetH = 0
                     offsetW = cycle[idx] * 60 / 8
@@ -249,13 +237,7 @@ class startButtonObject(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(1250, y - self.image.get_height() * 2.5))
 
     def render(self, display):
-        global selectedItem
-        isAllSet = True
-        for item in selectedItem: # [0 3 1 1 4]
-            if item < 0:
-                isAllSet = False
-                break
-        if isAllSet:
+        if isAllSet():
             display.blit(self.image, self.rect)
 
     def onlyForTest(self):
@@ -286,13 +268,19 @@ class startButtonObject(pygame.sprite.Sprite):
                 system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
                 chdir(game_dir)
 
+def isAllSet():
+    global selectedItem
+    for item in selectedItem: # [0 3 1 1 4]
+        if item <= 0:
+            return False
+    return True
+                
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 bg = pygame.image.load(os.path.join(IMAGE_PATH + '/background.png'))
 clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)
 run = True
-isAllSet = False
 badge_clicked = False
 
 clickedMenuIndex = -1

@@ -1,7 +1,11 @@
+import pdb
+
 from lua_generation import *
 import pygame
 import textboxify
 from os import system, chdir, getcwd
+import os
+
 
 YELLOW = (255, 204, 0)
 PUPPLE = (153, 0, 255)
@@ -10,6 +14,32 @@ WHITE = (255, 255, 255)
 BLUE = (3, 140, 252)
 GREEN = (132, 252, 3)
 RED = (252, 3, 65)
+
+
+class LoadingObject(pygame.sprite.Sprite):
+    def __init__(self):
+        super(LoadingObject, self).__init__()
+        image_path = 'animations/Loading'
+        img_list = os.listdir(image_path)
+        img_list.sort()
+        self.image_sprite = []
+        self.value = 0
+        for img in img_list:
+            if img == ".DS_Store":
+                pass
+            else:
+                self.image_sprite.append(pygame.image.load(os.path.join(image_path, img)))
+
+    def render(self, display):
+        if self.value >= len(self.image_sprite):
+            self.value = 0
+        self.image = self.image_sprite[self.value]
+        surface = pygame.display.get_surface()
+        x, y = size = surface.get_width(), surface.get_height()
+        self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+        display.blit(self.image, self.rect)
+
+        self.value += 1
 
 
 class WasherObject(pygame.sprite.Sprite):
@@ -358,6 +388,7 @@ inventory = InventoryObject()
 badge = badgeObject()
 start_button = startButtonObject()
 bar = BarObject()
+loading = LoadingObject()
 
 clickedMenuIndex = -1
 clickedItemIndex = 0
@@ -438,6 +469,7 @@ while run:
         rinse_group.draw(screen)
 
     washer.render(screen)
+    loading.render(screen)
     start_button.update(event_list)
     start_button.render(screen)
 

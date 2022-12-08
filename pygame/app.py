@@ -9,6 +9,42 @@ import os
 IMAGE_PATH = os.getcwd() + "/images"
 SOUND_PATH = os.getcwd() + "/sounds"
 
+
+class LoadingObject(pygame.sprite.Sprite):
+    def __init__(self):
+        super(LoadingObject, self).__init__()
+        image_path = 'animations/Loading'
+        img_list = os.listdir(image_path)
+        img_list.sort()
+        self.image_sprite = []
+        self.value = 0
+        for img in img_list:
+            if img == ".DS_Store":
+                pass
+            else:
+                self.image = pygame.image.load(os.path.join(image_path, img))
+                self.image = pygame.transform.scale(self.image, (300, 300))
+                self.image_sprite.append(self.image)
+
+    def render(self, display):
+        global selectedItem
+        isAllSet = True
+        for item in selectedItem:  # [0 3 1 1 4]
+            if item < 0:
+                isAllSet = False
+                break
+        if isAllSet:
+            if self.value >= len(self.image_sprite):
+                self.value = 0
+            self.image = self.image_sprite[self.value]
+            surface = pygame.display.get_surface()
+            x, y = size = surface.get_width(), surface.get_height()
+            self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+            display.blit(self.image, self.rect)
+
+            self.value += 1
+
+
 class WasherObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -337,6 +373,7 @@ inventory = InventoryObject()
 badge = badgeObject()
 start_button = startButtonObject()
 bar = BarObject()
+loading = LoadingObject()
 
 menuSoundEffect = pygame.mixer.Sound(SOUND_PATH + '/menu.wav')
 menuSoundEffect.set_volume(0.1)
@@ -371,9 +408,9 @@ while run:
     dialog_group.draw(screen)
 
     washer.render(screen)
+    loading.render(screen)
     start_button.update(event_list)
     start_button.render(screen)
-
 
     badge.update(event_list)
     badge.render(screen)

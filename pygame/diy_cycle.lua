@@ -16,7 +16,7 @@ return function(personality_data)
 				amount = {
 					type = 'target_volume',
 					data = {
-						gallons = 8
+						gallons = 1
 					}
 				},
 				temperature = {
@@ -41,16 +41,16 @@ return function(personality_data)
 				})
 			}),
 			wash_step.sub_cycle_update({ sub_cycle = 'rinse' }),
-			wash_step.pause({ seconds = 16 }),
+			wash_step.pause({ seconds = 2 }),
 			wash_step.sub_cycle_update({sub_cycle = 'spin'}),
 			wash_step.pause({seconds = 10}),
 			wash_step.spin({
 				recovery = false,
 				times = wash_step.spin.level_timed({
-					no_spin_seconds = 24,
-					normal_seconds = 24,
-					more_seconds = 24,
-					extra_seconds = 24
+					no_spin_seconds = 4,
+					normal_seconds = 4,
+					more_seconds = 4,
+					extra_seconds = 4
 				}),
 				profile = import(data/global_front_load/wash_steps/spin/profile/closed_loop/spin_drain_test/final_spin_drain_on_test.lua)(personality_data)
 			}),

@@ -1,3 +1,5 @@
+import pdb
+
 from lua_generation import *
 import pygame
 import textboxify
@@ -35,16 +37,19 @@ class LoadingObject(pygame.sprite.Sprite):
             self.image = self.image_sprite[self.value]
             surface = pygame.display.get_surface()
             x, y = size = surface.get_width(), surface.get_height()
-            print(x, y)
-            self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
 
-            bg_coord_box = org_bg[950:1250, y - 30 - self.image.get_height() - 150: y - 30 - self.image.get_height() + 150, :]
-            self.image[self.image == [99, 204, 202]] = bg_coord_box
-            display.blit(self.image, self.rect)
+            self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+            org_img = pygame.surfarray.array3d(org_bg)
+            bg_coord_box = org_img[950:1250, y - 30 - self.image.get_height() - 150: y - 30 - self.image.get_height() + 150, :]
+            tmp = pygame.surfarray.array3d(self.image)
+            tmp[tmp == [99, 204, 202]] = bg_coord_box
+            surf = pygame.surfarray.make_surface(tmp)
+
+            display.blit(surf, self.rect)
 
             self.value += 1
 
-
+p
 class WasherObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -386,6 +391,7 @@ while run:
                     dialog_box.set_text(DIALOG_TEXT[dialog_step])
 
     org_bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    # pdb.set_trace()
     screen.blit(org_bg, (0, 0))
     cycle_group.draw(screen)
     cycle_group.update(event_list)

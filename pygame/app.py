@@ -431,9 +431,9 @@ while run:
     badge.update(event_list)
     badge.render(screen)
 
-    # badgeGroup = badgeGroupObject()
-    # badgeGroup.render(screen)
-    # badgeGroup.update(event_list, screen)
+    badgeGroup = badgeGroupObject()
+    badgeGroup.render(screen)
+    badgeGroup.update(event_list, screen)
 
     pygame.display.flip()
 

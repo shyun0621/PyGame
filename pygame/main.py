@@ -46,7 +46,7 @@ while not done:
             # win = control_bar.makeCurrentScreen()
             menuScreen.endCurrentScreen()
             done = True
-            subprocess.call("python game.py", shell=True)
+            subprocess.call("python app.py", shell=True)
         elif pbtn_pressed:
             menuScreen.endCurrentScreen()
             done = True

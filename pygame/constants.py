@@ -38,3 +38,19 @@ DIALOG_TEXT = [
 ]
 
 ITEM_TEXT = ["0", "1", "2", "4", "8"]
+
+ITEM_COLUMN_1_POS_X = 41
+ITEM_COLUMN_2_POS_X = 139
+ITEM_COLUMN_3_POS_X = 238
+ITEM_ROW_1_POS_Y = 162
+ITEM_ROW_2_POS_Y = 248
+
+IMAGE_ITEM_FILL = "/potion_fill.png"
+IMAGE_ITEM_WASH = "/potion_wash.png"
+IMAGE_ITEM_SPIN = "/potion_spin.png"
+IMAGE_ITEM_RINSE = "/potion_rinse.png"
+
+IMAGE_CYCLE_FILL = "/fill.png"
+IMAGE_CYCLE_WASH = "/wash.png"
+IMAGE_CYCLE_SPIN = "/spin.png"
+IMAGE_CYCLE_RINSE = "/rinse.png"

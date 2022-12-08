@@ -282,46 +282,48 @@ clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)
 run = True
 badge_clicked = False
-
 clickedMenuIndex = -1
 clickedItemIndex = 0
+dialog_step = 0
+selectedItem = [-1 for i in range(MENU_COUNT)]
+cycle = [0 for i in range(MENU_COUNT)]
 
-cycle = [
-    CycleObject(CYCLE_ITEM_POS_X, CYCLE_ITEM_POS_Y, IMAGE_PATH + '/fill.png', 0),
-    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W, CYCLE_ITEM_POS_Y, IMAGE_PATH + '/wash.png', 1),
-    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W * 2, CYCLE_ITEM_POS_Y, IMAGE_PATH + '/spin.png', 2),
-    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W * 3, CYCLE_ITEM_POS_Y, IMAGE_PATH + '/rinse.png', 3)
+cycleItems = [
+    CycleObject(CYCLE_ITEM_POS_X, CYCLE_ITEM_POS_Y, IMAGE_PATH + IMAGE_CYCLE_FILL, 0),
+    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W, CYCLE_ITEM_POS_Y, IMAGE_PATH + IMAGE_CYCLE_WASH, 1),
+    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W * 2, CYCLE_ITEM_POS_Y, IMAGE_PATH + IMAGE_CYCLE_SPIN, 2),
+    CycleObject(CYCLE_ITEM_POS_X + CYCLE_ITEM_OFFSET_W * 3, CYCLE_ITEM_POS_Y, IMAGE_PATH + IMAGE_CYCLE_RINSE, 3)
 ]
-cycle_group = pygame.sprite.RenderPlain(*cycle)
+cycle_group = pygame.sprite.RenderPlain(*cycleItems)
 
 item = [
     [
-        InventorySlotObject(IMAGE_PATH + '/potion_fill.png', ( 41, 162), 0),
-        InventorySlotObject(IMAGE_PATH + '/potion_fill.png', (139, 162), 1),
-        InventorySlotObject(IMAGE_PATH + '/potion_fill.png', (238, 162), 2),
-        InventorySlotObject(IMAGE_PATH + '/potion_fill.png', ( 41, 248), 3),
-        InventorySlotObject(IMAGE_PATH + '/potion_fill.png', (139, 248), 4)
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_FILL, (ITEM_COLUMN_1_POS_X, ITEM_ROW_1_POS_Y), 0),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_FILL, (ITEM_COLUMN_2_POS_X, ITEM_ROW_1_POS_Y), 1),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_FILL, (ITEM_COLUMN_3_POS_X, ITEM_ROW_1_POS_Y), 2),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_FILL, (ITEM_COLUMN_1_POS_X, ITEM_ROW_2_POS_Y), 3),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_FILL, (ITEM_COLUMN_2_POS_X, ITEM_ROW_2_POS_Y), 4)
     ],
     [
-        InventorySlotObject(IMAGE_PATH + '/potion_wash.png', ( 41, 162), 0),
-        InventorySlotObject(IMAGE_PATH + '/potion_wash.png', (139, 162), 1),
-        InventorySlotObject(IMAGE_PATH + '/potion_wash.png', (238, 162), 2),
-        InventorySlotObject(IMAGE_PATH + '/potion_wash.png', ( 41, 248), 3),
-        InventorySlotObject(IMAGE_PATH + '/potion_wash.png', (139, 248), 4)
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_WASH, (ITEM_COLUMN_1_POS_X, ITEM_ROW_1_POS_Y), 0),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_WASH, (ITEM_COLUMN_2_POS_X, ITEM_ROW_1_POS_Y), 1),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_WASH, (ITEM_COLUMN_3_POS_X, ITEM_ROW_1_POS_Y), 2),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_WASH, (ITEM_COLUMN_1_POS_X, ITEM_ROW_2_POS_Y), 3),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_WASH, (ITEM_COLUMN_2_POS_X, ITEM_ROW_2_POS_Y), 4)
     ],
     [
-        InventorySlotObject(IMAGE_PATH + '/potion_spin.png', ( 41, 162), 0),
-        InventorySlotObject(IMAGE_PATH + '/potion_spin.png', (139, 162), 1),
-        InventorySlotObject(IMAGE_PATH + '/potion_spin.png', (238, 162), 2),
-        InventorySlotObject(IMAGE_PATH + '/potion_spin.png', ( 41, 248), 3),
-        InventorySlotObject(IMAGE_PATH + '/potion_spin.png', (139, 248), 4)
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_SPIN, (ITEM_COLUMN_1_POS_X, ITEM_ROW_1_POS_Y), 0),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_SPIN, (ITEM_COLUMN_2_POS_X, ITEM_ROW_1_POS_Y), 1),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_SPIN, (ITEM_COLUMN_3_POS_X, ITEM_ROW_1_POS_Y), 2),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_SPIN, (ITEM_COLUMN_1_POS_X, ITEM_ROW_2_POS_Y), 3),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_SPIN, (ITEM_COLUMN_2_POS_X, ITEM_ROW_2_POS_Y), 4)
     ],
     [
-        InventorySlotObject(IMAGE_PATH + '/potion_rinse.png', ( 41, 162), 0),
-        InventorySlotObject(IMAGE_PATH + '/potion_rinse.png', (139, 162), 1),
-        InventorySlotObject(IMAGE_PATH + '/potion_rinse.png', (238, 162), 2),
-        InventorySlotObject(IMAGE_PATH + '/potion_rinse.png', ( 41, 248), 3),
-        InventorySlotObject(IMAGE_PATH + '/potion_rinse.png', (139, 248), 4)
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_RINSE, (ITEM_COLUMN_1_POS_X, ITEM_ROW_1_POS_Y), 0),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_RINSE, (ITEM_COLUMN_2_POS_X, ITEM_ROW_1_POS_Y), 1),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_RINSE, (ITEM_COLUMN_3_POS_X, ITEM_ROW_1_POS_Y), 2),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_RINSE, (ITEM_COLUMN_1_POS_X, ITEM_ROW_2_POS_Y), 3),
+        InventorySlotObject(IMAGE_PATH + IMAGE_ITEM_RINSE, (ITEM_COLUMN_2_POS_X, ITEM_ROW_2_POS_Y), 4)
     ]
 ]
 
@@ -331,10 +333,6 @@ item_groups = [
     pygame.sprite.RenderPlain(*item[2]),
     pygame.sprite.RenderPlain(*item[3]),
 ]
-
-dialog_step = 0
-selectedItem = [-1 for i in range(MENU_COUNT)]
-cycle = [0 for i in range(MENU_COUNT)]
 
 dialog_box = textboxify.TextBoxFrame(
         text=DIALOG_TEXT[dialog_step],

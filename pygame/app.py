@@ -62,7 +62,7 @@ class WasherObject(pygame.sprite.Sprite):
 
         surface = pygame.display.get_surface()
         x, y = size = surface.get_width(), surface.get_height()
-        self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+        self.rect = self.image.get_rect(center=(1050, y - 30 - self.image.get_height() / 2))
         display.blit(self.image, self.rect)
 
 
@@ -252,7 +252,7 @@ class startButtonObject(pygame.sprite.Sprite):
 
         surface = pygame.display.get_surface()
         x, y = size = surface.get_width(), surface.get_height()
-        self.rect = self.image.get_rect(center=(1250, y - self.image.get_height() * 2.5))
+        self.rect = self.image.get_rect(center=(1150, y - self.image.get_height() * 2.5))
 
     def render(self, display):
         if isAllSet():

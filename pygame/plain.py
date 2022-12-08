@@ -1,3 +1,5 @@
+import pdb
+
 import pygame as pg
 import string
 import os
@@ -249,6 +251,7 @@ class Button(object):
         if self.rect.collidepoint(event.pos):
             self.clicked = True
             cycle_start = True
+            SaveToLua([int(item.final) for item in tbs], "diy_cycle.lua", "Diy Cycle")
             # game_dir = getcwd()
             # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles"
             # chdir(dpath)
@@ -365,9 +368,9 @@ btn_settings = {
 
 fill_entry = TextBox(rect=(150, 200, 150, 30), **username_settings)
 wash_entry = TextBox(rect=(150, 250, 150, 30), **password_settings)
-spin_entry = TextBox(rect=(150, 300, 150, 30), **password_settings)
-rinse_entry = TextBox(rect=(150, 350, 150, 30), **password_settings)
-tbs = [fill_entry, wash_entry, spin_entry, rinse_entry]
+rinse_entry = TextBox(rect=(150, 300, 150, 30), **password_settings)
+spin_entry = TextBox(rect=(150, 350, 150, 30), **password_settings)
+tbs = [fill_entry, wash_entry, rinse_entry, spin_entry]
 
 
 def get_textboxes(username, password):
@@ -385,10 +388,10 @@ filllabel = myfont.render("Fill      (Gal): ", 0, (255,255,0))
 screen.blit(filllabel, (20, 200))
 washlabel = myfont.render("Wash  (Min): ", 0, (255,255,0))
 screen.blit(washlabel, (20, 250))
-spinlabel = myfont.render("Spin   (Min): ", 0, (255,255,0))
-screen.blit(spinlabel, (20, 300))
-rinselabel = myfont.render("Rinse (Min): ", 0, (255,255,0))
-screen.blit(rinselabel, (20, 350))
+rinselabel = myfont.render("Spin   (Min): ", 0, (255,255,0))
+screen.blit(rinselabel, (20, 300))
+spinlabel = myfont.render("Rinse (Min): ", 0, (255,255,0))
+screen.blit(spinlabel, (20, 350))
 cycle_start = False
 
 while not done:

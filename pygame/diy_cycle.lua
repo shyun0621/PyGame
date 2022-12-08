@@ -16,7 +16,7 @@ return function(personality_data)
 				amount = {
 					type = 'target_volume',
 					data = {
-						gallons = 2
+						gallons = 1
 					}
 				},
 				temperature = {
@@ -31,7 +31,7 @@ return function(personality_data)
 			wash_step.tumble({
 				adaptive_fill_config = false,
 				deep_fill_can_change_fill_target_during_this_fill = false,
-				time_seconds = 2,
+				time_seconds = 1,
 				profile = drive_step.tumble({
 					drive_profile_name = 'gfl_tumble_example',
 					entries = {
@@ -47,10 +47,10 @@ return function(personality_data)
 			wash_step.spin({
 				recovery = false,
 				times = wash_step.spin.level_timed({
-					no_spin_seconds = 2,
-					normal_seconds = 2,
-					more_seconds = 2,
-					extra_seconds = 2
+					no_spin_seconds = 1,
+					normal_seconds = 1,
+					more_seconds = 1,
+					extra_seconds = 1
 				}),
 				profile = import(data/global_front_load/wash_steps/spin/profile/closed_loop/spin_drain_test/final_spin_drain_on_test.lua)(personality_data)
 			}),

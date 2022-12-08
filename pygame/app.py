@@ -28,14 +28,18 @@ class LoadingObject(pygame.sprite.Sprite):
 
     def render(self, display):
         global cycle_ready
-
+        global org_bg
         if cycle_ready:
             if self.value >= len(self.image_sprite):
                 self.value = 0
             self.image = self.image_sprite[self.value]
             surface = pygame.display.get_surface()
             x, y = size = surface.get_width(), surface.get_height()
+            print(x, y)
             self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+
+            bg_coord_box = org_bg[950:1250, y - 30 - self.image.get_height() - 150: y - 30 - self.image.get_height() + 150, :]
+            self.image[self.image == [99, 204, 202]] = bg_coord_box
             display.blit(self.image, self.rect)
 
             self.value += 1
@@ -144,9 +148,6 @@ class BarObject(pygame.sprite.Sprite):
         display.blit(self.image, self.rect)
         global clickedMenuIndex
         global selectedItem
-        color = YELLOW
-        offsetH = 0
-        offsetW = 0
 
         for idx in range(len(selectedItem)):         
             if selectedItem[idx] >= 0:           
@@ -379,7 +380,7 @@ menuSoundEffect = pygame.mixer.Sound(SOUND_PATH + '/menu.wav')
 menuSoundEffect.set_volume(0.1)
 itemSoundEffect = pygame.mixer.Sound(SOUND_PATH + '/item.wav')
 itemSoundEffect.set_volume(0.1)
-
+cycle_ready = False
 
 while run:
     clock.tick(60)
@@ -394,7 +395,8 @@ while run:
                 if dialog_step <= FINAL_STEP:
                     dialog_box.set_text(DIALOG_TEXT[dialog_step])
 
-    screen.blit(pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+    org_bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen.blit(org_bg, (0, 0))
     cycle_group.draw(screen)
     cycle_group.update(event_list)
 

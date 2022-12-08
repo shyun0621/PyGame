@@ -25,11 +25,11 @@ BAR_POS_X = 1250
 BAR_POS_Y = 754
 
 DIALOG_TEXT = [
-    "HoyLee: Hello~ Washer",
-    "Washer: Hi~ HyoLee",
-    "HoyLee: How can I make a custom cycle?",
+    "Hyolee: Hello~ Washer",
+    "Washer: Hi~ Hyolee",
+    "Hyolee: How can I make a custom cycle?",
     "Washer: You can make it by clicking the items!!",
-    "Washer: Let's click first item",
+    "Washer: Let's click cycle item menu",
     "Washer: Select your Fill Item (Gallon)",
     "Washer: Select your Wash Item (Minutes)",
     "Washer: Select your Spin Item (Minutes)",

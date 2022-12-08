@@ -260,11 +260,15 @@ class Button(object):
         game_dir = getcwd()
         dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/Parametric/lua/data/global_front_load/model_data/cycles/"
         chdir(dpath)
-        SaveToLua([int(item.final) for item in tbs], "diy_cycle.lua", "Diy Cycle")
+        tmp = [int(item.final) for item in tbs]
+        for i in range(1,4):
+            tmp[i] = tmp[i] * 60
+
+        SaveToLua(tmp, "diy_cycle.lua", "Diy Cycle")
         gpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
         chdir(gpath)
         # system("dmake -f gfl-mc-target.mk clean -j16 RELEASE=N DEBUG=N")
-        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
         # system("blp --address 0xC0 --file build/Binaries/gfl-mc_application_v0.0.0.0.apl --force")
         chdir(game_dir)
         cycle_start = False

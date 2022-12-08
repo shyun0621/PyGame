@@ -98,7 +98,7 @@ class TextBox(object):
     def process_kwargs(self, kwargs):
         defaults = {"id": None,
                     "command": None,
-                    "active": True,
+                    "active": False,
                     "color": pg.Color("white"),
                     "font_color": pg.Color("black"),
                     "outline_color": pg.Color("black"),

@@ -43,7 +43,7 @@ class LoadingObject(pygame.sprite.Sprite):
             surface = pygame.display.get_surface()
             x, y = size = surface.get_width(), surface.get_height()
 
-            self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
+            self.rect = self.image.get_rect(center=(1050, y - 30 - self.image.get_height() / 2))
             display.blit(self.image, self.rect)
 
             self.value += 1

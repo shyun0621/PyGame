@@ -27,13 +27,9 @@ class LoadingObject(pygame.sprite.Sprite):
                 self.image_sprite.append(self.image)
 
     def render(self, display):
-        global selectedItem
-        isAllSet = True
-        for item in selectedItem:  # [0 3 1 1 4]
-            if item < 0:
-                isAllSet = False
-                break
-        if isAllSet:
+        global cycle_ready
+
+        if cycle_ready:
             if self.value >= len(self.image_sprite):
                 self.value = 0
             self.image = self.image_sprite[self.value]
@@ -259,7 +255,10 @@ class startButtonObject(pygame.sprite.Sprite):
             display.blit(self.image, self.rect)
 
     def onlyForTest(self):
+        global cycle_ready
+        cycle_ready = True
         SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
+
         game_dir = getcwd()
         dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
 
@@ -268,6 +267,7 @@ class startButtonObject(pygame.sprite.Sprite):
         system("dmake -f gfl-mc-target.mk RELEASE=Y DEBUG=N build_parametric")
         # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
         chdir(game_dir)
+        cycle_ready = False
 
 
     def update(self, event_list):

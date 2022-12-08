@@ -44,7 +44,7 @@ class CycleObject(pygame.sprite.Sprite):
                     menuSoundEffect.play()
                     global clickedMenuIndex
                     global dialog_box
-                    clickedMenuIndex = self.index 
+                    clickedMenuIndex = self.index
                     dialog_box.reset(hard=True)
                     dialog_box.set_text(DIALOG_TEXT[FINAL_STEP + clickedMenuIndex + 1])
                     
@@ -125,19 +125,19 @@ class BarObject(pygame.sprite.Sprite):
             if selectedItem[idx] >= 0:           
                 title = myFont.render(str(cycleMenu[idx]), True, BLACK)    
                 if idx == 0:
-                    offsetH = 0
+                    offsetH = BAR_ITEM_0_OFFSET_H
                     offsetW = cycleMenu[idx] * 60 / 8
                     color = PUPPLE
                 elif idx == 1:
-                    offsetH = 61
+                    offsetH = BAR_ITEM_1_OFFSET_H
                     offsetW = cycleMenu[idx] * 60 / 40  
                     color = GREEN
                 elif idx == 2:
-                    offsetH = 123
+                    offsetH = BAR_ITEM_2_OFFSET_H
                     offsetW = cycleMenu[idx] * 60 / 40
                     color = BLUE
                 elif idx == 3:
-                    offsetH = 189
+                    offsetH = BAR_ITEM_3_OFFSET_H
                     offsetW = cycleMenu[idx] * 60 / 40
                     color = RED
                     

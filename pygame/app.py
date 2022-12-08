@@ -49,7 +49,6 @@ class LoadingObject(pygame.sprite.Sprite):
 
             self.value += 1
 
-p
 class WasherObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()

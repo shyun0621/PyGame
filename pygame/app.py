@@ -20,7 +20,7 @@ class WasherObject(pygame.sprite.Sprite):
             self.image = pygame.image.load(os.path.join(IMAGE_PATH + '/ready.png'))
 
         self.image = pygame.transform.scale(self.image, (300, 300))
-
+        
         surface = pygame.display.get_surface()
         x, y = size = surface.get_width(), surface.get_height()
         self.rect = self.image.get_rect(center=(1100, y - 30 - self.image.get_height() / 2))
@@ -88,7 +88,11 @@ class InventorySlotObject(pygame.sprite.Sprite):
                     global selectedItem
                     clickedItemIndex = self.index
                     selectedItem[clickedMenuIndex] = clickedItemIndex
-                    cycleMenu[clickedMenuIndex] += CYCLE_MENU_VALUE[self.index]
+                    
+                    if clickedItemIndex == 0:
+                        cycleMenu[clickedMenuIndex] = 0
+                    else:
+                        cycleMenu[clickedMenuIndex] += CYCLE_MENU_VALUE[self.index]
 
                     if clickedMenuIndex == 0:
                         if cycleMenu[clickedMenuIndex] > 8:

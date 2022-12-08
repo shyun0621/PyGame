@@ -86,7 +86,7 @@ class CycleObject(pygame.sprite.Sprite):
                     dialog_box.reset(hard=True)
                     dialog_step = FINAL_STEP + clickedMenuIndex + 1
                     dialog_box.set_text(DIALOG_TEXT[dialog_step])
-                    
+
 class InventoryObject(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -394,7 +394,6 @@ cycle_ready = False
 
 while run:
     clock.tick(60)
-    cycle_ready = True
     event_list = pygame.event.get()
     for event in event_list:
         if event.type == pygame.QUIT:

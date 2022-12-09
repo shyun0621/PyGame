@@ -259,19 +259,27 @@ class startButtonObject(pygame.sprite.Sprite):
             display.blit(self.image, self.rect)
 
     def onlyForTest(self):
+        global cycleMenu
         global cycle_ready
         cycle_ready = True
-        # SaveToLua(selectedItem, "diy_cycle.lua", "Diy Cycle")
-        #
-        # game_dir = getcwd()
-        # dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
-        #
-        # # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/"
-        # chdir(dpath)
+        luadata = cycleMenu.copy()
+        for i in range(1,4):
+            luadata[i] = luadata[i] * 60
+        SaveToLua(luadata, "diy_cycle.lua", "Diy Cycle")
+        
+        game_dir = getcwd()
+        dpath = "/Users/hykim/project/frontLoad/laundry.washer-global-front-load-2019-source-snapshot/"
+        
+        # dpath = "/Users/gea_hs/Documents/projects/hackathon/2022_2nd/laundry.washer-global-front-load-2019-source-snapshot/"
+        chdir(dpath)
         # system("dmake -f gfl-mc-target.mk RELEASE=Y DEBUG=N build_parametric")
-        # # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-        # chdir(game_dir)
-        # cycle_ready = False
+        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        system("/usr/local/bin/blp/blp --address 0xC0 --file build/Binaries/gfl-mc_application_v0.0.0.0.apl --force")
+        
+        # system("/usr/local/bin/blp/blp --address 0xC0 --file build/Parametric/lua/data/global_front_load/default.parametric.apl --force")
+        # system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
+        chdir(game_dir)
+        cycle_ready = False
 
 
     def update(self, event_list):
@@ -298,7 +306,7 @@ def playClickAnim():
     clickAnimCount += 1
 
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE | pygame.HWSURFACE)
 bg = pygame.image.load(os.path.join(IMAGE_PATH + '/background.png'))
 clock = pygame.time.Clock()
 myFont = pygame.font.SysFont("arial", 30, True, False)

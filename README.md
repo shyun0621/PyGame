@@ -11,3 +11,4 @@ $ pip install -r requirements.txt -e .
 $ cd pygame  
 $ python app.py  
 
+usr/local/bin/blp/blp

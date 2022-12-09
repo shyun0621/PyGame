@@ -269,7 +269,7 @@ class Button(object):
         chdir(gpath)
         # system("dmake -f gfl-mc-target.mk clean -j16 RELEASE=N DEBUG=N")
         system("dmake -f gfl-mc-target.mk package -j16 RELEASE=N DEBUG=N")
-        # system("blp --address 0xC0 --file build/Binaries/gfl-mc_application_v0.0.0.0.apl --force")
+        system("/usr/local/bin/blp/blp --address 0xC0 --file build/Binaries/gfl-mc_application_v0.0.0.0.apl --force")
         chdir(game_dir)
         cycle_start = False
 
